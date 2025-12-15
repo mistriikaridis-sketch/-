@@ -1,7 +1,0 @@
-name = "zbqcxqloveeo-online"
-compatibility_date = "2025-12-15"
-main = "src/index.js"  
-
-[site]
-bucket = "./dist"  
-entry-point = "workers-site"  
