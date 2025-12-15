@@ -1,6 +1,2 @@
-name = "my-game"
+name = "mygame"
 compatibility_date = "2025-12-15"
-main = "./workers-site/index.js"
-
-[site]
-bucket = "./"
