@@ -3,473 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI工具箱</title>
-    <!-- 引入Font Awesome图标库 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* ==================== 全局样式 ==================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0f0c29 0%, #1a1642 50%, #24243e 100%);
-            color: #e0e0e0;
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        /* ==================== 顶部导航栏 ==================== */
-        .navbar {
-            background: rgba(15, 12, 41, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .navbar-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo i {
-            color: #7c3aed;
-        }
-
-        .search-box {
-            position: relative;
-            flex: 1;
-            max-width: 400px;
-            min-width: 200px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 3rem;
-            border: 2px solid rgba(124, 58, 237, 0.3);
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            font-size: 0.95rem;
-            transition: all 0.3s;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #7c3aed;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #7c3aed;
-        }
-
-        /* ==================== 主横幅区域 ==================== */
-        .hero {
-            text-align: center;
-            padding: 4rem 2rem 3rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: #b0b0b0;
-            margin-bottom: 0.5rem;
-        }
-
-        .hero .cta {
-            font-size: 1rem;
-            color: #7c3aed;
-            font-weight: 600;
-        }
-
-        /* ==================== 分类筛选栏 ==================== */
-        .category-filter {
-            max-width: 1400px;
-            margin: 0 auto 3rem;
-            padding: 0 2rem;
-        }
-
-        .category-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .category-btn {
-            padding: 0.7rem 1.5rem;
-            border: 2px solid rgba(124, 58, 237, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-            color: #e0e0e0;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        .category-btn:hover {
-            border-color: #7c3aed;
-            background: rgba(124, 58, 237, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .category-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-color: transparent;
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
-        }
-
-        /* ==================== 工具卡片网格 ==================== */
-        .tools-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem 4rem;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        /* 工具卡片样式 */
-        .tool-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 1.5rem;
-            transition: all 0.3s;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
-            border-color: rgba(124, 58, 237, 0.5);
-        }
-
-        .tool-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .tool-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            flex-shrink: 0;
-        }
-
-        .tool-info {
-            flex: 1;
-        }
-
-        .tool-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 0.3rem;
-        }
-
-        .tool-description {
-            color: #b0b0b0;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-        }
-
-        .tool-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .tag {
-            padding: 0.3rem 0.8rem;
-            background: rgba(124, 58, 237, 0.2);
-            border: 1px solid rgba(124, 58, 237, 0.4);
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #c4b5fd;
-        }
-
-        .tool-link {
-            display: inline-block;
-            padding: 0.7rem 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .tool-link:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
-        }
-
-        /* ==================== 页脚 ==================== */
-        .footer {
-            background: rgba(15, 12, 41, 0.95);
-            padding: 2rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 3rem;
-        }
-
-        .footer p {
-            color: #b0b0b0;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer a {
-            color: #7c3aed;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer a:hover {
-            color: #a78bfa;
-        }
-
-        /* ==================== 响应式设计 ==================== */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .navbar {
-                padding: 1rem;
-            }
-
-            .navbar-content {
-                flex-direction: column;
-            }
-
-            .search-box {
-                max-width: 100%;
-            }
-
-            .tools-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .category-buttons {
-                gap: 0.5rem;
-            }
-
-            .category-btn {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* 无结果提示 */
-        .no-results {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: #b0b0b0;
-            font-size: 1.2rem;
-            display: none;
-        }
-
-        .no-results i {
-            font-size: 4rem;
-            color: #7c3aed;
-            margin-bottom: 1rem;
-        }
-    </style>
-</head>
-<body>
-    <!-- 顶部导航栏 -->
-    <nav class="navbar">
-        <div class="navbar-content">
-            <div class="logo">
-                <i class="fas fa-robot"></i>
-                <span>AI Nav</span>
-            </div>
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="搜索AI工具...">
-            </div>
-        </div>
-    </nav>
-
-    <!-- 主横幅区域 -->
-    <section class="hero">
-        <h1>🔮 AI工具导航站</h1>
-        <p>探索提升效率与创造力的下一代工具</p>
-        <p class="cta">即刻探索,赋能你的工作流</p>
-    </section>
-
-    <!-- 分类筛选栏 -->
-    <section class="category-filter">
-        <div class="category-buttons" id="categoryButtons">
-            <button class="category-btn active" data-category="all">✨ 全部</button>
-            <button class="category-btn" data-category="featured">⭐ 热门精选</button>
-            <button class="category-btn" data-category="writing">✍️ 文本写作</button>
-            <button class="category-btn" data-category="image">🎨 图像生成</button>
-            <button class="category-btn" data-category="video">🎬 视频创作</button>
-            <button class="category-btn" data-category="office">💼 智慧办公</button>
-            <button class="category-btn" data-category="assistant">💬 智能对话</button>
-            <button class="category-btn" data-category="design">🛍️ 商业设计</button>
-            <button class="category-btn" data-category="music">🎵 音乐语音</button>
-            <button class="category-btn" data-category="agent">🤖 智能体</button>
-            <button class="category-btn" data-category="coding">🧱 编程开发</button>
-            <button class="category-btn" data-category="api">☁️ API服务</button>
-            <button class="category-btn" data-category="industry">🎮 行业应用</button>
-            <button class="category-btn" data-category="marketing">📈 营销企业</button>
-        </div>
-    </section>
-
-    <!-- 工具展示区 -->
-    <section class="tools-container">
-        <div class="tools-grid" id="toolsGrid"></div>
-        <div class="no-results" id="noResults">
-            <i class="fas fa-search"></i>
-            <p>未找到匹配的工具</p>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        <p>© 2025 AI工具导航 | 精心整理,持续更新中</p>
-        <p><a href="#">提交工具</a> | <a href="#">关于我们</a></p>
-    </footer>
+    <title>Ashley的游戏屋</title>
+    <meta name="description" content="Ashley的游戏世界 - 精选独立游戏导航">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <script>
-        // ==================== 工具数据 ====================
-        // 完整的AI工具列表，按照分类组织
-        // category可选值: featured, writing, image, video, office, assistant, design, music, agent, coding, api, industry, marketing
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Noto Sans SC"', 'sans-serif'] },
+                    colors: {
+                        brand: { 500: '#6366f1', 600: '#4f46e5' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        .game-card { transition: all 0.3s ease; }
+        .game-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+        .game-img { transition: transform 0.5s ease; }
+        .game-card:hover .game-img { transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white font-bold shadow-lg">A</div>
+                <span class="font-bold text-xl tracking-tight text-gray-900">Ashley的游戏屋</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         
-        const tools = [
-            // ⭐ 热门精选
-            { name: '豆包AI助手', icon: '🎯', description: '字节跳动出品，一站式解决困惑难题', tags: ['免费', '多模态', '中文'], category: 'featured', url: 'https://doubao.com' },
-            { name: 'AiPPT', icon: '📊', description: '专注于AI生成PPT的垂直工具', tags: ['PPT', '办公', '高效'], category: 'featured', url: 'https://aippt.cn' },
-            { name: '堆友', icon: '🎨', description: '阿里出品的设计师平台，含图片/视频生成', tags: ['设计', '视频', '图片'], category: 'featured', url: 'https://duiyou.163.com' },
-            { name: '可灵AI', icon: '🎬', description: '快手推出的Sora级视频生成模型', tags: ['视频生成', '高质量'], category: 'featured', url: 'https://kling.kuaishou.com' },
-            { name: '即梦AI', icon: '✨', description: '剪映旗下AI创作平台', tags: ['视频', '图片', '创作'], category: 'featured', url: 'https://jimeng.jianying.com' },
-            { name: 'TRAE编程', icon: '💻', description: '字节跳动推出的AI编程IDE', tags: ['编程', 'IDE', 'AI辅助'], category: 'featured', url: 'https://trae.ai' },
-            { name: '有言AI', icon: '🎥', description: '一键视频创作，数字人平台', tags: ['数字人', '视频', '创作'], category: 'featured', url: 'https://yijian.cn/youyan' },
-            { name: '扣子', icon: '🤖', description: '字节跳动推出的AI Bot开发平台', tags: ['Bot开发', '平台'], category: 'featured', url: 'https://coze.cn' },
-            { name: '稿定设计', icon: '🖼️', description: '在线设计平台，含AI设计、PPT等', tags: ['设计', 'PPT', '在线'], category: 'featured', url: 'https://gaoding.com' },
-            { name: 'BoardMix博思白板', icon: '📝', description: '在线协作白板，支持AIPPT', tags: ['协作', '白板', 'PPT'], category: 'featured', url: 'https://boardmix.cn' },
-            { name: '摄图AI', icon: '📷', description: '摄图网推出的AI图像工具集', tags: ['图像', '工具集'], category: 'featured', url: 'https://699pic.com/ai' },
-            { name: 'FeelFish写小说', icon: '📖', description: '专为小说创作者打造的客户端', tags: ['小说', '写作', '创作'], category: 'featured', url: 'https://feelfish.ai' },
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                欢迎来到 <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-purple-600">Ashley</span> 的游戏世界！
+            </h1>
+            <p class="text-lg text-gray-500 max-w-2xl mx-auto font-light">
+                探索创意的边界，无需下载，即刻体验。
+            </p>
+        </div>
 
-            // ✍️ 文本写作
-            { name: '腾讯元宝', icon: '💎', description: '腾讯混元大模型C端产品', tags: ['对话', '写作', '腾讯'], category: 'writing', url: 'https://yuanbao.tencent.com' },
-            { name: '通义千问', icon: '🌟', description: '阿里大模型对话与写作', tags: ['写作', '问答', '阿里'], category: 'writing', url: 'https://tongyi.aliyun.com' },
-            { name: '蛙蛙写作', icon: '🐸', description: '专注于小说、剧本创作', tags: ['小说', '剧本'], category: 'writing', url: 'https://wawaxiezuo.com' },
-            { name: '讯飞文书', icon: '📄', description: '专注于公文写作', tags: ['公文', '写作'], category: 'writing', url: 'https://wenshu.iflytek.com' },
-            { name: '稿定AI文案', icon: '✏️', description: '营销文案生成', tags: ['营销', '文案'], category: 'writing', url: 'https://gaoding.com/ai' },
-            { name: '笔灵AI写作', icon: '✒️', description: '论文、公文、网文辅助写作', tags: ['论文', '公文', '网文'], category: 'writing', url: 'https://ibiling.cn' },
-            { name: 'ima.copilot', icon: '🔍', description: '腾讯推出的桌面端知识库与搜索工具', tags: ['知识库', '搜索', '腾讯'], category: 'writing', url: 'https://ima.qq.com' },
-            { name: '讯飞星火', icon: '⭐', description: '科大讯飞通用大模型', tags: ['对话', '写作', '讯飞'], category: 'writing', url: 'https://xinghuo.xfyun.cn' },
-            { name: '66论文网', icon: '📚', description: '论文辅助写作', tags: ['论文', '学术'], category: 'writing', url: 'https://66lunwen.com' },
-            { name: '千笔AI', icon: '🖊️', description: '论文写作与降重', tags: ['论文', '降重'], category: 'writing', url: 'https://qianbi.net' },
-            { name: 'Aibiye', icon: '🎓', description: 'AI论文生成专业版', tags: ['论文', '生成'], category: 'writing', url: 'https://aibiye.com' },
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            // 🎨 图像生成
-            { name: '堆友AI绘画', icon: '🎨', description: '阿里出品，免费3D/2D绘画', tags: ['3D', '2D', '绘画'], category: 'image', url: 'https://duiyou.163.com' },
-            { name: '即梦AI图片', icon: '🖼️', description: '字节出品，高质量生图', tags: ['生图', '高质量'], category: 'image', url: 'https://jimeng.jianying.com' },
-            { name: '阿贝AI', icon: '📚', description: '专注于绘本创作', tags: ['绘本', '创作'], category: 'image', url: 'https://abbei.com' },
-            { name: '可图AI', icon: '🌈', description: '快手可灵团队出品的生图模型', tags: ['生图', '模型'], category: 'image', url: 'https://ketu.kuaishou.com' },
-            { name: '绘蛙AI', icon: '🐸', description: '阿里出品，电商生图工具', tags: ['电商', '生图'], category: 'image', url: 'https://huiwa.aliyun.com' },
-            { name: 'MX绘画', icon: '🎭', description: '多元风格艺术创作', tags: ['艺术', '多风格'], category: 'image', url: 'https://mx-ai.com' },
-            { name: '巨日禄', icon: '📱', description: '漫画视频创作', tags: ['漫画', '视频'], category: 'image', url: 'https://jurilu.com' },
-            { name: '图星人', icon: '⭐', description: 'AI生成+图库', tags: ['生成', '图库'], category: 'image', url: 'https://tuxingren.com' },
-            { name: 'LinkFox', icon: '🦊', description: '跨境电商AI图工具', tags: ['跨境', '电商'], category: 'image', url: 'https://linkfox.com' },
-            { name: 'Openflow', icon: '⚙️', description: '行业工作流优化平台', tags: ['工作流', '优化'], category: 'image', url: 'https://myopenflow.cn' },
-            { name: '造点AI', icon: '✨', description: '图像与视频创作', tags: ['图像', '视频'], category: 'image', url: 'https://zaodian.ai' },
-            { name: '包图AI', icon: '📦', description: '包图网旗下AI工具', tags: ['设计', '素材'], category: 'image', url: 'https://ibaotu.com/ai' },
-            { name: 'Holopix', icon: '🎮', description: '游戏素材创作', tags: ['游戏', '素材'], category: 'image', url: 'https://holopix.ai' },
-            { name: '吐司', icon: '🍞', description: '在线生图模型社区', tags: ['社区', '模型'], category: 'image', url: 'https://tusiart.com' },
-            { name: '触手AI', icon: '🖐️', description: '漫画与插画辅助', tags: ['漫画', '插画'], category: 'image', url: 'https://douchu.ai' },
-            { name: '妙话AI', icon: '😄', description: 'AI梗图生成', tags: ['梗图', '趣味'], category: 'image', url: 'https://miaohua.ai' },
-            { name: 'RunningHub', icon: '🏃', description: 'ComfyUI云端工作流', tags: ['ComfyUI', '工作流'], category: 'image', url: 'https://runninghub.ai' },
-            { name: '字加', icon: '🔤', description: '字体管理与设计', tags: ['字体', '设计'], category: 'image', url: 'https://hellofont.cn' },
-            { name: '炉米Lumi', icon: '🔥', description: '字节推出的创作服务平台', tags: ['创作', '平台'], category: 'image', url: 'https://lumi.volcengine.com' },
-            { name: 'Canva可画', icon: '🎨', description: '在线设计平台含AI生图', tags: ['在线设计', '生图'], category: 'image', url: 'https://canva.cn' },
+            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
+                <div class="h-48 overflow-hidden bg-gray-200 relative">
+                    <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=800&auto=format&fit=crop" 
+                         alt="建造大师封面" 
+                         class="game-img w-full h-full object-cover">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">建造大师 (Townscaper)</h3>
+                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
+                        没有目标，只有纯粹的建造快乐。轻轻点击海面，生成色彩斑斓的水上城镇和高塔。
+                    </p>
+                    <a href="https://oskarstalberg.com/Townscaper/#GSB0RARueC6Snc9E0lO5B" target="_blank" 
+                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
+                        开始游戏
+                    </a>
+                </div>
+            </article>
 
-            // 🎬 视频创作
-            { name: '堆友AI视频', icon: '🎥', description: '阿里堆友视频生成功能', tags: ['视频生成', '阿里'], category: 'video', url: 'https://duiyou.163.com' },
-            { name: '即梦AI视频', icon: '🎬', description: '字节跳动视频生成', tags: ['视频生成', '字节'], category: 'video', url: 'https://jimeng.jianying.com' },
-            { name: '可灵AI', icon: '🌟', description: '电影级视频生成', tags: ['电影级', '高质量'], category: 'video', url: 'https://kling.kuaishou.com' },
-            { name: '白日梦AI', icon: '☁️', description: '专注于长视频生成', tags: ['长视频', '生成'], category: 'video', url: 'https://brm.ai' },
-            { name: '剪映', icon: '✂️', description: '剪辑软件，接入AI功能', tags: ['剪辑', 'AI'], category: 'video', url: 'https://capcut.cn' },
-            { name: '秒创', icon: '⚡', description: '文本转视频工具', tags: ['文本转视频', '快速'], category: 'video', url: 'https://aigc.wondershare.cn' },
-            { name: '万兴天幕', icon: '🎭', description: '万兴科技多模态音视频大模型', tags: ['多模态', '音视频'], category: 'video', url: 'https://wondershare.cn' },
-            { name: '绘想', icon: '🎨', description: '百度视频生成解决方案', tags: ['视频生成', '百度'], category: 'video', url: 'https://huixiang.baidu.com' },
-            { name: 'Vivago AI', icon: '💫', description: '智小象出品，视频生成', tags: ['视频生成'], category: 'video', url: 'https://vivago.ai' },
-            { name: 'Nereo AI', icon: '🎯', description: '高性价比视频工具', tags: ['性价比', '视频'], category: 'video', url: 'https://nereo.ai' },
-            { name: 'MagicLight', icon: '✨', description: '动画视频全流程生成', tags: ['动画', '全流程'], category: 'video', url: 'https://magiclight.ai' },
-            { name: '讯飞智作', icon: '🎙️', description: '虚拟主播与配音视频', tags: ['虚拟主播', '配音'], category: 'video', url: 'https://peiyin.xunfei.cn' },
-            { name: '讯飞绘镜', icon: '🔮', description: '多模态视频生成', tags: ['多模态', '视频'], category: 'video', url: 'https://huijing.xfyun.cn' },
-            { name: 'Akool', icon: '🎭', description: '换脸与视频个性化', tags: ['换脸', '个性化'], category: 'video', url: 'https://akool.com' },
-            { name: 'FilmAction', icon: '🎞️', description: '电影创作平台', tags: ['电影', '创作'], category: 'video', url: 'https://filmaction.ai' },
-            { name: '清影', icon: '🌙', description: '智谱AI推出的视频生成模型', tags: ['视频生成', '智谱'], category: 'video', url: 'https://ying.zhipuai.cn' },
-            { name: 'Sora', icon: '🚀', description: 'OpenAI出品（目前未全面开放）', tags: ['OpenAI', '视频'], category: 'video', url: 'https://openai.com/sora' },
-            { name: '海螺AI', icon: '🐚', description: 'MiniMax推出的多模态助手，含视频', tags: ['多模态', '视频'], category: 'video', url: 'https://hailuo.ai' },
-            { name: '腾讯混元视频', icon: '🎬', description: '腾讯视频生成模型', tags: ['视频生成', '腾讯'], category: 'video', url: 'https://hunyuan.tencent.com' },
+            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
+                <div class="h-48 overflow-hidden bg-gray-200 relative">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" 
+                         alt="堆起来封面" 
+                         class="game-img w-full h-full object-cover">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">堆起来 (Sandspiel)</h3>
+                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
+                        极富创意的落沙物理模拟。控制沙、水、火、植物，观察它们之间奇妙的化学反应。
+                    </p>
+                    <a href="https://sandspiel.club/" target="_blank" 
+                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
+                        开始游戏
+                    </a>
+                </div>
+            </article>
 
-            // 💼 智慧办公
-            { name: '稿定PPT', icon: '📊', description: '稿定旗下PPT工具', tags: ['PPT', '设计'], category: 'office', url: 'https://gaoding.com/ppt' },
-            { name: '咔片PPT', icon: '📑', description: 'AI PPT制作', tags: ['PPT', 'AI'], category: 'office', url: 'https://kapianai.com' },
-            { name: 'ChatPPT', icon: '💬', description: '必优科技出品，对话生成PPT', tags: ['对话', 'PPT'], category: 'office', url: 'https://chat
+            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
+                <div class="h-48 overflow-hidden bg-gray-200 relative">
+                    <img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=800&auto=format&fit=crop" 
+                         alt="一起斯洛克封面" 
+                         class="game-img w-full h-full object-cover">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">一起斯洛克 (PCOL)</h3>
+                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
+                        极简风格的在线台球。叫上好友，或者独自练习，享受击球入袋的清脆快感。
+                    </p>
+                    <a href="http://www.heyzxz.me/pcol/" target="_blank" 
+                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
+                        开始游戏
+                    </a>
+                </div>
+            </article>
+
+            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
+                <div class="h-48 overflow-hidden bg-gray-200 relative">
+                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800&auto=format&fit=crop" 
+                         alt="黎明飞驰封面" 
+                         class="game-img w-full h-full object-cover">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">黎明飞驰 (Slow Roads)</h3>
+                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
+                        无尽的驾驶禅意体验。在程序生成的唯美风景中，伴着日出日落，没有终点，只有自由。
+                    </p>
+                    <a href="https://slowroads.io/#A2-552e15c5@0" target="_blank" 
+                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
+                        开始游戏
+                    </a>
+                </div>
+            </article>
+
+            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
+                <div class="h-48 overflow-hidden bg-gray-200 relative">
+                    <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop" 
+                         alt="疯狂躲封面" 
+                         class="game-img w-full h-full object-cover">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">疯狂躲 (Missile Game)</h3>
+                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
+                        极度考验反应速度。在无尽的科幻隧道中控制导弹，躲避一切障碍。
+                    </p>
+                    <a href="https://missile-game.bwhmather.com/" target="_blank" 
+                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
+                        开始游戏
+                    </a>
+                </div>
+            </article>
+
+            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
+                <div class="h-48 overflow-hidden bg-gray-200 relative">
+                    <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800&auto=format&fit=crop" 
+                         alt="快乐瞬间封面" 
+                         class="game-img w-full h-full object-cover">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">快乐瞬间 (Moments)</h3>
+                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
+                        一场关于光影与互动的艺术实验。放松身心，沉浸在美妙的视觉体验中。
+                    </p>
+                    <a href="https://moments.epic.net/" target="_blank" 
+                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
+                        开始游戏
+                    </a>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-100 py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400 text-sm">
+                © 2024 Ashley的游戏屋. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
