@@ -3,175 +3,536 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ashley的游戏屋</title>
-    <meta name="description" content="Ashley的游戏世界 - 精选独立游戏导航">
+    <title>Forefront - 为你发现下一个浪潮的新坐标</title>
+    <meta name="description" content="精选全球前沿科技、AI资讯与学术研究导航站">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Noto Sans SC"', 'sans-serif'] },
-                    colors: {
-                        brand: { 500: '#6366f1', 600: '#4f46e5' }
-                    }
-                }
-            }
-        }
-    </script>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        html { scroll-behavior: smooth; }
-        .game-card { transition: all 0.3s ease; }
-        .game-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
-        .game-img { transition: transform 0.5s ease; }
-        .game-card:hover .game-img { transform: scale(1.05); }
+        /* =========================================
+           1. Apple Design System (核心设计系统)
+           ========================================= */
+        :root {
+            /* 色彩体系 */
+            --bg-body: #f5f5f7;
+            --bg-card: #ffffff;
+            --glass-material: rgba(255, 255, 255, 0.75);
+            --text-primary: #1d1d1f;
+            --text-secondary: #424245;
+            --text-tertiary: #86868b;
+            --accent-color: #007AFF;
+            --accent-gradient: linear-gradient(135deg, #007AFF, #5856D6);
+            --border-light: rgba(0, 0, 0, 0.05);
+            
+            /* 阴影与特效 */
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.08);
+            --radius-card: 20px;
+            --radius-btn: 99px;
+            --transition-spring: cubic-bezier(0.25, 0.8, 0.25, 1); /* iOS 风格弹簧动画 */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* =========================================
+           2. 导航栏 (Frosted Glass)
+           ========================================= */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 64px;
+            background: var(--glass-material);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 max(24px, 5%);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-actions { display: flex; gap: 16px; align-items: center; }
+
+        .btn-submit {
+            padding: 8px 20px;
+            background: var(--text-primary);
+            color: white;
+            border-radius: var(--radius-btn);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s var(--transition-spring);
+        }
+        .btn-submit:hover { transform: scale(1.03); background: #000; }
+
+        /* =========================================
+           3. 英雄展示区 (Hero Section)
+           ========================================= */
+        .hero {
+            padding: 160px 20px 60px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+            margin-bottom: 48px;
+            letter-spacing: -0.01em;
+        }
+
+        /* 智能搜索框 */
+        .search-wrapper {
+            position: relative;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 24px 18px 54px;
+            border-radius: 24px;
+            border: 1px solid rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.8);
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: #fff;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(0,122,255,0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: 1.1rem;
+        }
+
+        /* =========================================
+           4. 分类筛选系统
+           ========================================= */
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 50px;
+            padding: 0 20px;
+        }
+
+        .cat-btn {
+            padding: 8px 20px;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: var(--radius-btn);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cat-btn:hover { background: #f2f2f5; }
+        
+        .cat-btn.active {
+            background: var(--text-primary);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* =========================================
+           5. 卡片网格布局
+           ========================================= */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 默认桌面端 4列 */
+            gap: 24px;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 5% 100px;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.3s var(--transition-spring);
+            cursor: pointer;
+            position: relative;
+            height: 100%;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        /* 自动生成的 macOS 风格图标 */
+        .tool-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .tool-content h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tool-content p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            /* 限制显示2行 */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 42px; 
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            background: #f5f5f7;
+            border-radius: 6px;
+            color: var(--text-tertiary);
+            font-weight: 600;
+        }
+
+        .visit-icon {
+            color: var(--accent-color);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover .visit-icon {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 无结果状态 */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px;
+            color: var(--text-tertiary);
+        }
+
+        /* =========================================
+           6. 响应式适配
+           ========================================= */
+        @media (max-width: 1200px) {
+            .grid-container { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 900px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .hero-title { font-size: 2.5rem; }
+        }
+        @media (max-width: 600px) {
+            .grid-container { grid-template-columns: 1fr; }
+            .navbar { padding: 0 20px; }
+            .hero { padding-top: 120px; }
+            .hero-title { font-size: 2rem; }
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col">
+<body>
 
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white font-bold shadow-lg">A</div>
-                <span class="font-bold text-xl tracking-tight text-gray-900">Ashley的游戏屋</span>
-            </div>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-compass"></i>
+            <span>Forefront</span>
+        </div>
+        <div class="nav-actions">
+            <button class="btn-submit" onclick="window.location.href='mailto:submit@forefront.io'">提交工具</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1 class="hero-title">Forefront</h1>
+        <p class="hero-subtitle">为你发现下一个浪潮的新坐标</p>
+        
+        <div class="search-wrapper">
+            <i class="fa-solid fa-search search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="搜索新闻、论文、社区或工具...">
         </div>
     </header>
 
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        
-        <div class="text-center mb-16">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
-                欢迎来到 <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-purple-600">Ashley</span> 的游戏世界！
-            </h1>
-            <p class="text-lg text-gray-500 max-w-2xl mx-auto font-light">
-                探索创意的边界，无需下载，即刻体验。
-            </p>
-        </div>
+    <div class="category-nav" id="categoryContainer">
+        <button class="cat-btn active" data-cat="all">全部</button>
+        <button class="cat-btn" data-cat="news">新闻媒体</button>
+        <button class="cat-btn" data-cat="newsletter">通讯订阅</button>
+        <button class="cat-btn" data-cat="research">学术研究</button>
+        <button class="cat-btn" data-cat="aggregator">聚合工具</button>
+        <button class="cat-btn" data-cat="community">社区讨论</button>
+        <button class="cat-btn" data-cat="official">官方账号</button>
+    </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <main class="grid-container" id="toolsGrid">
+        </main>
 
-            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
-                <div class="h-48 overflow-hidden bg-gray-200 relative">
-                    <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=800&auto=format&fit=crop" 
-                         alt="建造大师封面" 
-                         class="game-img w-full h-full object-cover">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">建造大师 (Townscaper)</h3>
-                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
-                        没有目标，只有纯粹的建造快乐。轻轻点击海面，生成色彩斑斓的水上城镇和高塔。
-                    </p>
-                    <a href="https://oskarstalberg.com/Townscaper/#GSB0RARueC6Snc9E0lO5B" target="_blank" 
-                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
-                        开始游戏
-                    </a>
-                </div>
-            </article>
-
-            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
-                <div class="h-48 overflow-hidden bg-gray-200 relative">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" 
-                         alt="堆起来封面" 
-                         class="game-img w-full h-full object-cover">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">堆起来 (Sandspiel)</h3>
-                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
-                        极富创意的落沙物理模拟。控制沙、水、火、植物，观察它们之间奇妙的化学反应。
-                    </p>
-                    <a href="https://sandspiel.club/" target="_blank" 
-                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
-                        开始游戏
-                    </a>
-                </div>
-            </article>
-
-            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
-                <div class="h-48 overflow-hidden bg-gray-200 relative">
-                    <img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=800&auto=format&fit=crop" 
-                         alt="一起斯洛克封面" 
-                         class="game-img w-full h-full object-cover">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">一起斯洛克 (PCOL)</h3>
-                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
-                        极简风格的在线台球。叫上好友，或者独自练习，享受击球入袋的清脆快感。
-                    </p>
-                    <a href="http://www.heyzxz.me/pcol/" target="_blank" 
-                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
-                        开始游戏
-                    </a>
-                </div>
-            </article>
-
-            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
-                <div class="h-48 overflow-hidden bg-gray-200 relative">
-                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800&auto=format&fit=crop" 
-                         alt="黎明飞驰封面" 
-                         class="game-img w-full h-full object-cover">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">黎明飞驰 (Slow Roads)</h3>
-                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
-                        无尽的驾驶禅意体验。在程序生成的唯美风景中，伴着日出日落，没有终点，只有自由。
-                    </p>
-                    <a href="https://slowroads.io/#A2-552e15c5@0" target="_blank" 
-                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
-                        开始游戏
-                    </a>
-                </div>
-            </article>
-
-            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
-                <div class="h-48 overflow-hidden bg-gray-200 relative">
-                    <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop" 
-                         alt="疯狂躲封面" 
-                         class="game-img w-full h-full object-cover">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">疯狂躲 (Missile Game)</h3>
-                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
-                        极度考验反应速度。在无尽的科幻隧道中控制导弹，躲避一切障碍。
-                    </p>
-                    <a href="https://missile-game.bwhmather.com/" target="_blank" 
-                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
-                        开始游戏
-                    </a>
-                </div>
-            </article>
-
-            <article class="game-card group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
-                <div class="h-48 overflow-hidden bg-gray-200 relative">
-                    <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800&auto=format&fit=crop" 
-                         alt="快乐瞬间封面" 
-                         class="game-img w-full h-full object-cover">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">快乐瞬间 (Moments)</h3>
-                    <p class="text-gray-500 text-sm mb-6 line-clamp-2">
-                        一场关于光影与互动的艺术实验。放松身心，沉浸在美妙的视觉体验中。
-                    </p>
-                    <a href="https://moments.epic.net/" target="_blank" 
-                       class="mt-auto block w-full py-3 px-4 bg-gray-900 text-white font-medium text-center rounded-xl hover:bg-brand-600 transition-colors">
-                        开始游戏
-                    </a>
-                </div>
-            </article>
-
-        </div>
-    </main>
-
-    <footer class="bg-white border-t border-gray-100 py-10 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-gray-400 text-sm">
-                © 2024 Ashley的游戏屋. All Rights Reserved.
-            </p>
-        </div>
+    <footer style="text-align: center; padding: 40px; color: var(--text-tertiary); font-size: 0.85rem; border-top: 1px solid var(--border-light);">
+        <p>&copy; 2025 Forefront. Crafted with minimalist precision.</p>
     </footer>
 
+    <script>
+        // =========================================
+        // 1. 核心数据 (Data)
+        // =========================================
+        const toolsDatabase = [
+            // --- 新闻网站和媒体平台 ---
+            { name: "WIRED", url: "https://www.wired.com/", desc: "深度科技、AI和文化报道。", category: "news", tag: "深度报道" },
+            { name: "TechCrunch", url: "https://techcrunch.com/", desc: "初创、科技和AI新闻首选。", category: "news", tag: "创投" },
+            { name: "The Verge", url: "https://www.theverge.com/", desc: "消费者科技和AI趋势风向标。", category: "news", tag: "数码" },
+            { name: "Ars Technica", url: "https://arstechnica.com/", desc: "技术政策和科学深度分析。", category: "news", tag: "极客" },
+            { name: "VentureBeat", url: "https://venturebeat.com/", desc: "专注于AI与企业科技新闻。", category: "news", tag: "企业" },
+            { name: "MIT Tech Review", url: "https://www.technologyreview.com/", desc: "新兴科技和AI伦理权威评论。", category: "news", tag: "麻省理工" },
+            { name: "ScienceDaily", url: "https://www.sciencedaily.com/", desc: "最新科学研究新闻聚合。", category: "news", tag: "科学" },
+            { name: "Gizmodo", url: "https://gizmodo.com/", desc: "科技、文化和科学趣闻。", category: "news", tag: "文化" },
+            { name: "CNET", url: "https://www.cnet.com/", desc: "消费者科技评测和新闻。", category: "news", tag: "评测" },
+            { name: "MarkTechPost", url: "https://www.marktechpost.com/", desc: "专注于AI和机器学习的最新新闻。", category: "news", tag: "ML新闻" },
+
+            // --- AI和科技新闻通讯 ---
+            { name: "Superhuman AI", url: "https://www.superhuman.ai/", desc: "每日AI和科技精华摘要。", category: "newsletter", tag: "日报" },
+            { name: "Ben's Bites", url: "https://www.bensbites.com/", desc: "AI工具和趋势的快速阅览。", category: "newsletter", tag: "趋势" },
+            { name: "The Rundown AI", url: "https://www.therundown.ai/", desc: "AI最新发展总结。", category: "newsletter", tag: "总结" },
+            { name: "Import AI", url: "https://importai.substack.com/", desc: "前沿AI研究和影响深度分析。", category: "newsletter", tag: "深度" },
+            { name: "TLDR AI", url: "https://tldr.tech/ai", desc: "简短高效的AI新闻摘要。", category: "newsletter", tag: "简报" },
+            { name: "AlphaSignal", url: "https://alphasignal.ai/", desc: "AI突破和技术公告。", category: "newsletter", tag: "技术" },
+            { name: "Future Tools", url: "https://www.futuretools.io/", desc: "AI工具和初创公司发现。", category: "newsletter", tag: "工具库" },
+            { name: "The Batch", url: "https://www.deeplearning.ai/the-batch/", desc: "吴恩达团队出品的AI研究更新。", category: "newsletter", tag: "权威" },
+            { name: "KDnuggets", url: "https://www.kdnuggets.com/", desc: "数据科学和AI教程与新闻。", category: "newsletter", tag: "教程" },
+            { name: "The Neuron", url: "https://www.theneurondaily.com/", desc: "每日AI更新，紧跟时代。", category: "newsletter", tag: "每日" },
+
+            // --- 研究和学术平台 ---
+            { name: "arXiv", url: "https://arxiv.org/", desc: "AI和计算机科学预印本首发地。", category: "research", tag: "预印本" },
+            { name: "Papers with Code", url: "https://paperswithcode.com/", desc: "论文+代码实现，开发者必备。", category: "research", tag: "代码" },
+            { name: "Hugging Face", url: "https://huggingface.co/", desc: "AI模型和社区，开源中心。", category: "research", tag: "模型" },
+            { name: "Google Scholar", url: "https://scholar.google.com/", desc: "学术搜索和新论文警报。", category: "research", tag: "搜索" },
+            { name: "Nature", url: "https://www.nature.com/", desc: "高影响力科学期刊。", category: "research", tag: "期刊" },
+            { name: "Science", url: "https://www.science.org/", desc: "全球顶级科学研究期刊。", category: "research", tag: "期刊" },
+            { name: "PubMed", url: "https://pubmed.ncbi.nlm.nih.gov/", desc: "生物医学和AI应用论文。", category: "research", tag: "医学" },
+            { name: "Semantic Scholar", url: "https://www.semanticscholar.org/", desc: "AI驱动的免费论文搜索引擎。", category: "research", tag: "AI搜索" },
+            { name: "Phys.org", url: "https://phys.org/", desc: "物理和科技新闻中心。", category: "research", tag: "物理" },
+
+            // --- 聚合工具和RSS阅读器 ---
+            { name: "Feedly", url: "https://feedly.com/", desc: "RSS聚合，多源定制你的信息流。", category: "aggregator", tag: "RSS" },
+            { name: "Inoreader", url: "https://www.inoreader.com/", desc: "高级RSS阅读器和搜索工具。", category: "aggregator", tag: "高级" },
+            { name: "NewsBlur", url: "https://newsblur.com/", desc: "智能RSS阅读，过滤噪音。", category: "aggregator", tag: "智能" },
+            { name: "TechURLs", url: "https://techurls.com/", desc: "极简科技新闻聚合页。", category: "aggregator", tag: "聚合" },
+            { name: "Google Alerts", url: "https://www.google.com/alerts", desc: "设置关键词警报，监控网络。", category: "aggregator", tag: "监控" },
+
+            // --- 社交媒体和社区 ---
+            { name: "X (Twitter)", url: "https://x.com/", desc: "实时AI与科技话题讨论中心。", category: "community", tag: "实时" },
+            { name: "r/MachineLearning", url: "https://www.reddit.com/r/MachineLearning/", desc: "Reddit上的机器学习专业讨论。", category: "community", tag: "Reddit" },
+            { name: "r/artificial", url: "https://www.reddit.com/r/artificial/", desc: "AI新闻和辩论社区。", category: "community", tag: "辩论" },
+            { name: "r/technology", url: "https://www.reddit.com/r/technology/", desc: "大众科技前沿讨论。", category: "community", tag: "大众" },
+            { name: "LinkedIn", url: "https://www.linkedin.com/", desc: "专业网络和行业更新。", category: "community", tag: "职场" },
+            { name: "Hacker News", url: "https://news.ycombinator.com/", desc: "硬核科技和初创新闻聚合。", category: "community", tag: "硬核" },
+
+            // --- 官方和实验室账号 ---
+            { name: "OpenAI", url: "https://x.com/OpenAI", desc: "OpenAI 官方更新与公告。", category: "official", tag: "厂商" },
+            { name: "Anthropic", url: "https://x.com/AnthropicAI", desc: "Anthropic 研究进展。", category: "official", tag: "厂商" },
+            { name: "DeepMind", url: "https://x.com/DeepMind", desc: "Google DeepMind 突破性研究。", category: "official", tag: "厂商" },
+            { name: "Google AI", url: "https://x.com/GoogleAI", desc: "Google AI 新闻动态。", category: "official", tag: "厂商" },
+            { name: "NVIDIA", url: "https://x.com/nvidia", desc: "GPU硬件与AI应用前沿。", category: "official", tag: "硬件" },
+            { name: "Andrew Ng", url: "https://x.com/AndrewYNg", desc: "吴恩达的教育和AI洞见。", category: "official", tag: "大牛" },
+            { name: "Andrej Karpathy", url: "https://x.com/karpathy", desc: "Tesla/OpenAI 前核心成员。", category: "official", tag: "大牛" },
+            { name: "Demis Hassabis", url: "https://x.com/demishassabis", desc: "DeepMind CEO。", category: "official", tag: "大牛" },
+            { name: "Sam Altman", url: "https://x.com/sama", desc: "OpenAI CEO。", category: "official", tag: "大牛" },
+            { name: "Yann LeCun", url: "https://x.com/ylecun", desc: "Meta AI 首席科学家。", category: "official", tag: "大牛" }
+        ];
+
+        // =========================================
+        // 2. 逻辑处理 (Logic)
+        // =========================================
+        
+        // 智能渐变色生成器 (Smart Gradient Generator)
+        // 根据名称生成固定的、类macOS风格的渐变色，无需图片资源
+        function generateGradient(name) {
+            const colors = [
+                ['#FF9A9E', '#FECFEF'], // 暖粉
+                ['#A18CD1', '#FBC2EB'], // 紫罗兰
+                ['#84FAB0', '#8FD3F4'], // 青柠
+                ['#FFECD2', '#FCB69F'], // 蜜桃
+                ['#F6D365', '#FDA085'], // 阳光
+                ['#A1C4FD', '#C2E9FB'], // 天空
+                ['#667EEA', '#764BA2'], // 深邃紫
+                ['#4FACFE', '#00F2FE'], // 电光蓝
+                ['#43E97B', '#38F9D7']  // 极光绿
+            ];
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+            const index = Math.abs(hash) % colors.length;
+            return `linear-gradient(135deg, ${colors[index][0]}, ${colors[index][1]})`;
+        }
+
+        // DOM 元素
+        const grid = document.getElementById('toolsGrid');
+        const searchInput = document.getElementById('searchInput');
+        const catButtons = document.querySelectorAll('.cat-btn');
+        let currentCat = 'all';
+
+        // 渲染函数
+        function renderTools(data) {
+            grid.innerHTML = '';
+            
+            if (data.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fa-regular fa-compass" style="font-size: 48px; margin-bottom: 16px; opacity:0.3;"></i>
+                        <p>未找到相关资讯源</p>
+                    </div>
+                `;
+                return;
+            }
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                card.onclick = () => window.open(item.url, '_blank');
+                
+                // 生成首字母和背景
+                const bgStyle = generateGradient(item.name);
+                // 特殊处理：如果有 @ 符号（Twitter账号），取 @ 后面的字母，否则取前两个字母
+                let initial = item.name.startsWith('@') ? item.name.substring(1, 3) : item.name.substring(0, 2);
+                initial = initial.toUpperCase();
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="tool-icon" style="background: ${bgStyle}">${initial}</div>
+                        <i class="fa-solid fa-arrow-up-right-from-square visit-icon"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>${item.name}</h3>
+                        <p>${item.desc}</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="tag">${item.tag}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // 筛选与搜索逻辑
+        function filterAndSearch() {
+            const query = searchInput.value.toLowerCase();
+            
+            const filtered = toolsDatabase.filter(item => {
+                const catMatch = currentCat === 'all' || item.category === currentCat;
+                const searchMatch = item.name.toLowerCase().includes(query) || 
+                                    item.desc.toLowerCase().includes(query) ||
+                                    item.tag.toLowerCase().includes(query);
+                return catMatch && searchMatch;
+            });
+
+            renderTools(filtered);
+        }
+
+        // 事件监听
+        searchInput.addEventListener('input', filterAndSearch);
+
+        catButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                catButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCat = btn.dataset.cat;
+                filterAndSearch();
+            });
+        });
+
+        // 初始化
+        renderTools(toolsDatabase);
+
+    </script>
 </body>
 </html>
