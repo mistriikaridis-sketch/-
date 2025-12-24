@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psypath - Navigate Your Inner Universe</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Noto Serif SC', 'serif'],
+                    },
+                    colors: {
+                        // 您可以在这里微调主色调
+                        brand: {
+                            dark: '#1a1a1a', // 深黑色文字
+                            gray: '#f9fafb', // 浅灰背景
+                            accent: '#6366f1', // 强调色 (紫色)
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 玻璃拟态效果 (卡片背景) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        
+        /* 鼠标悬停时的卡片上浮效果 */
+        .hover-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.05);
+            border-color: #6366f1; /* 悬停时边框变色 */
+        }
+
+        /* 隐藏滚动条但保留功能 */
+        body::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-brand-gray text-brand-dark min-h-screen flex flex-col antialiased selection:bg-brand-accent selection:text-white">
+
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-200 rounded-full blur-[100px] opacity-30"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-100 rounded-full blur-[100px] opacity-40"></div>
+    </div>
+
+    <main class="flex-grow container mx-auto px-6 py-20 max-w-5xl flex flex-col items-center justify-center min-h-[85vh]">
+        
+        <header class="text-center mb-16 animate-fade-in">
+            <h1 class="text-5xl md:text-7xl font-serif font-bold tracking-tight mb-4 text-brand-dark">
+                Psypath
+            </h1>
+            <p class="text-lg md:text-xl text-gray-500 font-light tracking-wide font-sans">
+                Navigate Your Inner Universe
+            </p>
+            <div class="h-1 w-20 bg-brand-dark mx-auto mt-8 rounded-full opacity-10"></div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full animate-slide-up" style="animation-delay: 0.2s;">
+            
+            <a href="MBT心理测试.html" class="block group relative">
+                <div class="glass-card hover-card p-8 md:p-10 rounded-[32px] h-full flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                            🧩
+                        </div>
+                        <h2 class="text-2xl font-bold mb-3 group-hover:text-indigo-600 transition-colors">
+                            Nexus Type
+                        </h2>
+                        <p class="text-gray-500 leading-relaxed text-sm md:text-base">
+                            不止于 E/I。基于 NERIS 模型与大五人格理论，深度解析你的核心动机、决策逻辑与身份策略 (A/T)。
+                        </p>
+                    </div>
+                    
+                    <div class="mt-8 flex items-center text-sm font-semibold text-gray-400 group-hover:text-indigo-600 transition-colors">
+                        <span>开始探索</span>
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                </div>
+            </a>
+
+            <a href="GALLUP优势测评.html" class="block group relative">
+                <div class="glass-card hover-card p-8 md:p-10 rounded-[32px] h-full flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
+                            🧬
+                        </div>
+                        <h2 class="text-2xl font-bold mb-3 group-hover:text-emerald-600 transition-colors">
+                            Spark 34
+                        </h2>
+                        <p class="text-gray-500 leading-relaxed text-sm md:text-base">
+                            发现你的天赋原力。基于 34 项克利夫顿优势主题模型，精准定位你的 Top 5 核心驱动力。
+                        </p>
+                    </div>
+                    
+                    <div class="mt-8 flex items-center text-sm font-semibold text-gray-400 group-hover:text-emerald-600 transition-colors">
+                        <span>挖掘潜能</span>
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                </div>
+            </a>
+
+            </div>
+    </main>
+
+    <footer class="py-8 text-center text-xs text-gray-400 animate-fade-in" style="animation-delay: 0.5s;">
+        <p>&copy; 2025 Psypath Assessment. All rights reserved.</p>
+        </footer>
+
+</body>
+</html>
